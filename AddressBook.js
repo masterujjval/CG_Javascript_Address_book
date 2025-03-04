@@ -123,7 +123,7 @@ const mainMenu = () => {
         } else if (choice === "3") {
             editContact();
         } else if (choice === "4") {
-            console.log("👋 Exiting...");
+            console.log(" Exiting...");
             break;
         } else {
             console.log(" Invalid choice! Try again.");
