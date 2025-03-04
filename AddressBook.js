@@ -55,6 +55,10 @@ let contacts = [];
 const addContact = () => {
     console.log("\nAdd New Contact");
     let firstName = prompt("First Name: ");
+    if(contacts.map(contact=>contact.firstName.toLowerCase()).includes(firstName.toLowerCase())){
+        console.log("This record with name already exits")
+    }
+    else{
     let lastName = prompt("Last Name: ");
     let address = prompt("Address: ");
     let city = prompt("City: ");
@@ -65,7 +69,7 @@ const addContact = () => {
     let newContact = new AddressBook(firstName, lastName, address, city, state, phone, email);
     contacts.push(newContact);
     console.log("Contact added successfully!\n");
-};
+}};
 
 // Function to display contacts
 const displayContacts = () => {
@@ -74,7 +78,7 @@ const displayContacts = () => {
         return;
     }
     contacts.forEach((contact, index) => {
-        console.log(`🔹 Contact ${index + 1}:\n${contact.toString()}`);
+        console.log(`Contact ${index + 1}:\n${contact.toString()}`);
     });
 };
 
