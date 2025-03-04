@@ -144,6 +144,7 @@ const searchByCityOrState = () => {
     } else {
         console.log(`\n Contacts in ${searchQuery.charAt(0).toUpperCase() + searchQuery.slice(1)}:`);
         console.log(`Total contacts are: ${count}`);
+        result.sort((a,b)=>a.firstName.toLowerCase().localeCompare(b.firstName.toLowerCase()));
         result.forEach(contact => console.log(contact.toString()));
     }
 };
