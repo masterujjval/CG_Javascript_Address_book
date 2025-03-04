@@ -104,15 +104,26 @@ const editContact = () => {
     console.log("Contact updated successfully!\n");
 };
 
+const deleteContact=()=>{
+let name=prompt("Enter name of the person to delete record of: ");
+let index =contacts.findIndex(contact=>contact.firstName.toLowerCase() ===name.toLowerCase());
+if(index===-1)console.log("Record with given name not found!");
+else{
+    contacts.splice(index,1);
+    console.log("Record deleted successfully");
+}
+}
+
 // Main Menu
-try{
+
 const mainMenu = () => {
     while (true) {
         console.log("\n Address Book");
         console.log("1. Add Contact");
         console.log("2. Display Contacts");
         console.log("3. Edit Contact");
-        console.log("4. Exit");
+        console.log("4. Delete Contact");
+        console.log("5. Exit");
 
         let choice = prompt("Enter your choice: ");
 
@@ -122,7 +133,10 @@ const mainMenu = () => {
             displayContacts();
         } else if (choice === "3") {
             editContact();
-        } else if (choice === "4") {
+        }  else if (choice === "4") {
+            deleteContact();
+        } 
+        else if (choice === "5") {
             console.log(" Exiting...");
             break;
         } else {
@@ -130,9 +144,11 @@ const mainMenu = () => {
         }
     }
 }
-}catch(error){
-    console.log(error.message());
-}
+
 
 // Run the Address Book Program
+try{
 mainMenu();
+}catch(error){
+    console.log(error.message);
+}
