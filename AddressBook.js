@@ -114,6 +114,11 @@ else{
 }
 }
 
+const totalContacts=()=>{
+    let count=contacts.reduce((total,contact)=>total+1,0);
+    console.log(`Total contacts are ${count}`);
+}
+
 // Main Menu
 
 const mainMenu = () => {
@@ -123,7 +128,8 @@ const mainMenu = () => {
         console.log("2. Display Contacts");
         console.log("3. Edit Contact");
         console.log("4. Delete Contact");
-        console.log("5. Exit");
+        console.log("5. Total Contacts");
+        console.log("99. Exit");
 
         let choice = prompt("Enter your choice: ");
 
@@ -137,6 +143,9 @@ const mainMenu = () => {
             deleteContact();
         } 
         else if (choice === "5") {
+            totalContacts();
+        } 
+        else if (choice === "99") {
             console.log(" Exiting...");
             break;
         } else {
