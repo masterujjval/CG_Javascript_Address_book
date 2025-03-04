@@ -1,3 +1,11 @@
+// requiring for taking inout in node terminal
+const readline = require("readline");
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
 // Creating a class to store contact info
 class AddressBook {
     // Defining properties
@@ -18,13 +26,13 @@ class AddressBook {
     
          validate(){
     let nameReg=new RegExp('^[A-Z]{1}[a-z]{2,}$');
-    let addReg=new RegExp('^[\\w\\s]{3,}$');
+    let addReg = new RegExp('^[A-Za-z\\s]{3,}$');
     let phoneReg=new RegExp('^[6-9]{1}[0-9]{9}');
     let emailReg = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
 
     if(!nameReg.test(this.firstName)|| !nameReg.test(this.lastName)){
     throw new Error("First and Last name should start with capital letters");
-    }
+    }   
     // using else if ladder to check for validation
     else if(!addReg.test(this.city) || !addReg.test(this.address) || !addReg.test(this.state)){
     throw new Error("State, City or Address should contain minimum three characters!");
@@ -50,16 +58,48 @@ class AddressBook {
     }
 }
 
-// Main function to test the class
-function main() {
-try{
-    let obj = new AddressBook("Ujjwal", "Gupta", "shiv nagar","bhopal", "madhya pradesh", 9283829483, "ujjug@gmail.com");
-    console.log(obj.toString()); // Calling toString and printing
-}catch(error){
-console.log(error.message);
-}
-}
+// Recursive function to add contacts
+const addContacts = (arr, count, callback) => {
+    if (count === 0) { 
+        callback(arr); // Jab saare contacts add ho jaaye tab display karega
+        rl.close();
+        return;
+    }
 
-// Calling main function
+    rl.question("Enter contacts: (first name, last name, address, city, state, phone, email): ", (answer) => {
+        let contact = answer.split(",").map(x => x.trim());
+        try {
+            let obj = new AddressBook(contact[0], contact[1], contact[2], contact[3], contact[4], contact[5], contact[6]);
+            arr.push(obj);
+        } catch (error) {
+            console.log(`Error: ${error.message}`);
+        }
+
+        addContacts(arr, count - 1, callback); // Recursion call karega agle contact ke liye
+    });
+};
+
+// Display function
+const display = (arr) => {
+    console.log("\nAddress Book Entries:");
+    arr.forEach((contact, index) => {
+        console.log(`\nContact ${index + 1}:\n${contact.toString()}`);
+    });
+};
+
+// Main function
+const main = () => {    
+    let arr = new Array();
+    rl.question("How many contacts do you want to add? ", (answer) => {
+        let count = parseInt(answer);
+        if (isNaN(count) || count <= 0) {
+            console.log("Please enter a valid number!");
+            rl.close();
+        } else {
+            addContacts(arr, count, display);
+        }
+    });
+};
+
+// Run the program
 main();
-
