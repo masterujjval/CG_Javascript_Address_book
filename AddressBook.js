@@ -77,6 +77,8 @@ const displayContacts = () => {
     if (contacts.length === 0) {
         return;
     }
+    contacts.sort((a, b) => a.firstName.toLowerCase().localeCompare(b.firstName.toLowerCase()));
+
     contacts.forEach((contact, index) => {
         console.log(`Contact ${index + 1}:\n${contact.toString()}`);
     });
