@@ -126,6 +126,7 @@ const totalContacts=()=>{
 
 // search by city or state
 // added ability to view person
+// printing count of persons present in the state or city
 const searchByCityOrState = () => {
     
     let searchQuery = prompt("Enter City/State Name: ").toLowerCase();
@@ -134,11 +135,13 @@ const searchByCityOrState = () => {
         (contact.city.toLowerCase() === searchQuery) || 
         (contact.state.toLowerCase() === searchQuery)
     );
+    let count=result.reduce((total,contact)=>total+1,0);
 
     if (result.length === 0) {
         console.log(" No contacts found in this City/State.");
     } else {
         console.log(`\n Contacts in ${searchQuery.charAt(0).toUpperCase() + searchQuery.slice(1)}:`);
+        console.log(`Total contacts are: ${count}`);
         result.forEach(contact => console.log(contact.toString()));
     }
 };
