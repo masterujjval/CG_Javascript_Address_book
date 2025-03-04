@@ -1,105 +1,138 @@
-// requiring for taking inout in node terminal
-const readline = require("readline");
+const prompt = require("prompt-sync")();
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-// Creating a class to store contact info
 class AddressBook {
-    // Defining properties
-    
-
-    
-    constructor(firstName, lastName, address,city, state, phone, email) {
+    constructor(firstName, lastName, address, city, state, phone, email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address=address;
+        this.address = address;
         this.city = city;
         this.state = state;
         this.phone = phone;
         this.email = email;
         this.validate();
     }
-    // inside a class we dont write function while defining a method
-    
-         validate(){
-    let nameReg=new RegExp('^[A-Z]{1}[a-z]{2,}$');
-    let addReg = new RegExp('^[A-Za-z\\s]{3,}$');
-    let phoneReg=new RegExp('^[6-9]{1}[0-9]{9}');
-    let emailReg = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
 
-    if(!nameReg.test(this.firstName)|| !nameReg.test(this.lastName)){
-    throw new Error("First and Last name should start with capital letters");
-    }   
-    // using else if ladder to check for validation
-    else if(!addReg.test(this.city) || !addReg.test(this.address) || !addReg.test(this.state)){
-    throw new Error("State, City or Address should contain minimum three characters!");
-    }
-     else if(!phoneReg.test(this.phone)){
-    throw new Error("Enter valid phone number!");
-    }
-    else if(!emailReg.test(this.email)){
-        throw new Error("Enter valid email!");
+    // toString method
+    validate(){
+        let nameReg=new RegExp('^[A-Z]{1}[a-z]{2,}$');
+        let addReg = new RegExp('^[A-Za-z\\s]{3,}$');
+        let phoneReg=new RegExp('^[6-9]{1}[0-9]{9}');
+        let emailReg = new RegExp('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
     
-    }
+        if(!nameReg.test(this.firstName)|| !nameReg.test(this.lastName)){
+        throw new Error("First and Last name should start with capital letters");
+        }   
+        // using else if ladder to check for validation
+        else if(!addReg.test(this.city) || !addReg.test(this.address) || !addReg.test(this.state)){
+        throw new Error("State, City or Address should contain minimum three characters!");
+        }
+         else if(!phoneReg.test(this.phone)){
+        throw new Error("Enter valid phone number!");
+        }
+        else if(!emailReg.test(this.email)){
+            throw new Error("Enter valid email!");
+        
+        }
+        
+        
+        }
+        
+        
+        
+        
     
+        // toString method to return string representation
+        toString() {
+            return `First Name: ${this.firstName}\nLast Name: ${this.lastName}\nPhone: ${this.phone}\nEmail: ${this.email}\nCity: ${this.city}\nState: ${this.state}`;
+        }
     
-    }
-    
-    
-    
-    
-
-    // toString method to return string representation
-    toString() {
-        return `First Name: ${this.firstName}\nLast Name: ${this.lastName}\nPhone: ${this.phone}\nEmail: ${this.email}\nCity: ${this.city}\nState: ${this.state}`;
-    }
 }
 
-// Recursive function to add contacts
-const addContacts = (arr, count, callback) => {
-    if (count === 0) { 
-        callback(arr); // Jab saare contacts add ho jaaye tab display karega
-        rl.close();
+// Contact list
+let contacts = [];
+
+// Function to add new contact
+const addContact = () => {
+    console.log("\nAdd New Contact");
+    let firstName = prompt("First Name: ");
+    let lastName = prompt("Last Name: ");
+    let address = prompt("Address: ");
+    let city = prompt("City: ");
+    let state = prompt("State: ");
+    let phone = prompt("Phone: ");
+    let email = prompt("Email: ");
+
+    let newContact = new AddressBook(firstName, lastName, address, city, state, phone, email);
+    contacts.push(newContact);
+    console.log("Contact added successfully!\n");
+};
+
+// Function to display contacts
+const displayContacts = () => {
+    console.log("\nContact List:");
+    if (contacts.length === 0) {
+        return;
+    }
+    contacts.forEach((contact, index) => {
+        console.log(`🔹 Contact ${index + 1}:\n${contact.toString()}`);
+    });
+};
+
+// Function to edit contact by name
+const editContact = () => {
+    console.log("\n✏️ Edit Contact");
+    let nameToEdit = prompt("Enter first name of contact to edit: ");
+
+    let index = contacts.findIndex(contact => contact.firstName.toLowerCase() === nameToEdit.toLowerCase());
+
+    if (index === -1) {
+        console.log("Contact not found!");
         return;
     }
 
-    rl.question("Enter contacts: (first name, last name, address, city, state, phone, email): ", (answer) => {
-        let contact = answer.split(",").map(x => x.trim());
-        try {
-            let obj = new AddressBook(contact[0], contact[1], contact[2], contact[3], contact[4], contact[5], contact[6]);
-            arr.push(obj);
-        } catch (error) {
-            console.log(`Error: ${error.message}`);
-        }
+    console.log("Contact found! Enter new details:");
+    let firstName = prompt("First Name: ");
+    let lastName = prompt("Last Name: ");
+    let address = prompt("Address: ");
+    let city = prompt("City: ");
+    let state = prompt("State: ");
+    let phone = prompt("Phone: ");
+    let email = prompt("Email: ");
 
-        addContacts(arr, count - 1, callback); // Recursion call karega agle contact ke liye
-    });
+    // Updating contact details
+    contacts[index] = new AddressBook(firstName, lastName, address, city, state, phone, email);
+    console.log("Contact updated successfully!\n");
 };
 
-// Display function
-const display = (arr) => {
-    console.log("\nAddress Book Entries:");
-    arr.forEach((contact, index) => {
-        console.log(`\nContact ${index + 1}:\n${contact.toString()}`);
-    });
-};
+// Main Menu
+try{
+const mainMenu = () => {
+    while (true) {
+        console.log("\n Address Book");
+        console.log("1. Add Contact");
+        console.log("2. Display Contacts");
+        console.log("3. Edit Contact");
+        console.log("4. Exit");
 
-// Main function
-const main = () => {    
-    let arr = new Array();
-    rl.question("How many contacts do you want to add? ", (answer) => {
-        let count = parseInt(answer);
-        if (isNaN(count) || count <= 0) {
-            console.log("Please enter a valid number!");
-            rl.close();
+        let choice = prompt("Enter your choice: ");
+
+        if (choice === "1") {
+            addContact();
+        } else if (choice === "2") {
+            displayContacts();
+        } else if (choice === "3") {
+            editContact();
+        } else if (choice === "4") {
+            console.log("👋 Exiting...");
+            break;
         } else {
-            addContacts(arr, count, display);
+            console.log(" Invalid choice! Try again.");
         }
-    });
-};
+    }
+}
+}catch(error){
+    console.log(error.message());
+}
 
-// Run the program
-main();
+// Run the Address Book Program
+mainMenu();
