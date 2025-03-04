@@ -123,6 +123,28 @@ const totalContacts=()=>{
     console.log(`Total contacts are ${count}`);
 }
 
+
+// search by city or state
+const searchByCityOrState = () => {
+    
+    let searchQuery = prompt("Enter City/State Name: ").toLowerCase();
+
+    let result = contacts.filter(contact => 
+        (contact.city.toLowerCase() === searchQuery) || 
+        (contact.state.toLowerCase() === searchQuery)
+    );
+
+    if (result.length === 0) {
+        console.log(" No contacts found in this City/State.");
+    } else {
+        console.log(`\n Contacts in ${searchQuery.charAt(0).toUpperCase() + searchQuery.slice(1)}:`);
+        result.forEach(contact => console.log(contact.toString()));
+    }
+};
+
+// 👇 Call this function in the menu
+// searchByCityOrState();
+
 // Main Menu
 
 const mainMenu = () => {
@@ -133,6 +155,8 @@ const mainMenu = () => {
         console.log("3. Edit Contact");
         console.log("4. Delete Contact");
         console.log("5. Total Contacts");
+        console.log("6. Search by City or State");
+
         console.log("99. Exit");
 
         let choice = prompt("Enter your choice: ");
@@ -148,6 +172,9 @@ const mainMenu = () => {
         } 
         else if (choice === "5") {
             totalContacts();
+        } 
+        else if (choice === "6") {
+            searchByCityOrState();
         } 
         else if (choice === "99") {
             console.log(" Exiting...");
