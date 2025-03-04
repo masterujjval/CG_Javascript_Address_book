@@ -125,6 +125,7 @@ const totalContacts=()=>{
 
 
 // search by city or state
+// added ability to view person
 const searchByCityOrState = () => {
     
     let searchQuery = prompt("Enter City/State Name: ").toLowerCase();
